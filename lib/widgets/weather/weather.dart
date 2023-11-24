@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/widget/weather/degrees.dart';
+import 'package:flutter_training/widgets/weather/degrees.dart';
 
 class WeatherWidget extends StatelessWidget {
   const WeatherWidget({
@@ -13,7 +13,7 @@ class WeatherWidget extends StatelessWidget {
         AspectRatio(
           aspectRatio: 1,
           child: Placeholder(),
-          ),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
           child: DegreesWidget(),
