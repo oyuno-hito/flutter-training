@@ -11,28 +11,24 @@ class DegreesWidget extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _degreeText(
-            theme,
-            Colors.blue,
+          child: Text(
+            '** ℃',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: Colors.blue,
+            ),
           ),
         ),
         Expanded(
-          child: _degreeText(
-            theme,
-            Colors.red,
+          child: Text(
+            '** ℃',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: Colors.red,
+            ),
           ),
         ),
       ],
     );
   }
-}
-
-Widget _degreeText(ThemeData theme, Color color) {
-  return Text(
-  '** ℃',
-  textAlign: TextAlign.center,
-  style: theme.textTheme.labelLarge?.copyWith(
-      color: color,
-    ),
-  );
 }
