@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/widget/navigator/navigator.dart';
 import 'package:flutter_training/widget/weather/weather.dart';
 
 void main() {
@@ -11,19 +10,35 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
-        body:  Center(
+        body: Center(
           child: FractionallySizedBox(
             widthFactor: 0.5,
             child: Column(
               children: [
-                Spacer(),
-                WeatherWidget(),
+                const Spacer(),
+                const WeatherWidget(),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(top: 80),
-                    child: NavigatorWidget(),
+                    padding: const EdgeInsets.only(top: 80),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: const Text('Close'),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: const Text('Reload'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
