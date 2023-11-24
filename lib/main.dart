@@ -19,11 +19,10 @@ class MainApp extends StatelessWidget {
               children: [
                 const Spacer(),
                 const WeatherWidget(),
-                Expanded(
+                Flexible(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 80),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: TextButton(
