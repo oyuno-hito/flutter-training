@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/widgets/weather/weather.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,10 +10,39 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text('Hello World!'),
+          child: FractionallySizedBox(
+            widthFactor: 0.5,
+            child: Column(
+              children: [
+                const Spacer(),
+                const WeatherWidget(),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 80),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: const Text('Close'),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: const Text('Reload'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
