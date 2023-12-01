@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/models/weather_condition.dart';
-import 'package:flutter_training/widgets/weather/weather.dart';
+import 'package:flutter_training/features/weather/components/weather.dart';
+import 'package:flutter_training/features/weather/model/weather_condition.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 class WeatherScreen extends StatefulWidget {

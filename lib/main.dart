@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/splash_screen.dart';
-import 'package:flutter_training/weather_screen.dart';
+import 'package:flutter_training/features/splash/screen/splash_screen.dart';
+import 'package:flutter_training/features/weather/screen/weather_screen.dart';
 
 void main() {
   runApp(const MainApp());
