@@ -31,7 +31,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     children: [
                       Expanded(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           child: const Text('Close'),
                         ),
                       ),
