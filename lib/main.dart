@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/splash_screen.dart';
 import 'package:flutter_training/weather_screen.dart';
 
 void main() {
@@ -10,6 +11,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: WeatherScreen());
+    return MaterialApp(
+      routes: {
+        '/splash': (context) => const SplashScreen(),
+        '/weather': (context) => const WeatherScreen(),
+      },
+      home: const SplashScreen(),
+    );
   }
 }
