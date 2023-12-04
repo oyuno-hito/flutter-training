@@ -23,7 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    unawaited(nextPage());
+    unawaited(
+      WidgetsBinding.instance.endOfFrame.then((_) {
+        nextPage();
+      }),
+    );
   }
 
   @override
