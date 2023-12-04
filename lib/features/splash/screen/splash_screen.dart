@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_training/routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!context.mounted) {
       return;
     }
-    await Navigator.pushNamed(context, '/weather');
+    await Navigator.pushNamed(context, Routes.weather.path);
     unawaited(nextPage());
   }
 

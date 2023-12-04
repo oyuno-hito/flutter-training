@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
         Routes.splash.path: (context) => const SplashScreen(),
         Routes.weather.path: (context) => const WeatherScreen(),
       },
-      home: const SplashScreen(),
+      initialRoute: Routes.splash.path,
     );
   }
 }
