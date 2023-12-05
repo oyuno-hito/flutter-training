@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_training/models/weather_condition.dart';
-import 'package:flutter_training/widgets/weather/degrees.dart';
+import 'package:flutter_training/features/weather/components/degrees.dart';
+import 'package:flutter_training/features/weather/model/weather_condition.dart';
 
 class WeatherWidget extends StatelessWidget {
   const WeatherWidget({
