@@ -3,22 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_training/routes.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  Future<void> nextPage() async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    if (!context.mounted) {
-      return;
-    }
-    await Navigator.pushNamed(context, Routes.weather.path);
-    unawaited(nextPage());
-  }
+mixin AfterDisplayLayoutMixin<T extends StatefulWidget> on State<T> {
+  void nextPage();
 
   @override
   void initState() {
@@ -28,6 +14,26 @@ class _SplashScreenState extends State<SplashScreen> {
         nextPage();
       }),
     );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen>
+    with AfterDisplayLayoutMixin {
+  @override
+  Future<void> nextPage() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    if (!context.mounted) {
+      return;
+    }
+    await Navigator.pushNamed(context, Routes.weather.path);
+    unawaited(nextPage());
   }
 
   @override
