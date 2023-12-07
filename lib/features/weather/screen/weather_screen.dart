@@ -28,26 +28,22 @@ class _WeatherScreenState extends State<WeatherScreen> {
         _weather = weather;
       });
     } on YumemiWeatherError catch (e) {
-      unawaited(
-        showDialog<void>(
-          context: context,
-          barrierDismissible: false,
-          builder: (_) {
-            return ErrorDialogWidget(errorMessage: e.convertErrorMessage());
-          },
-        ),
-      );
+      _showErrorDialog(e.convertErrorMessage());
     } on WeatherConditionException catch (e) {
-      unawaited(
-        showDialog<void>(
-          context: context,
-          barrierDismissible: false,
-          builder: (_) {
-            return ErrorDialogWidget(errorMessage: e.toString());
-          },
-        ),
-      );
+      _showErrorDialog(e.toString());
     }
+  }
+
+  void _showErrorDialog(String message) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return ErrorDialogWidget(errorMessage: message);
+        },
+      ),
+    );
   }
 
   @override
