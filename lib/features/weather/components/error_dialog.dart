@@ -10,9 +10,9 @@ class ErrorDialogWidget extends StatelessWidget {
     return AlertDialog(
       content: Text(_errorMessage),
       actions: [
-        GestureDetector(
+        TextButton(
           child: const Text('OK'),
-          onTap: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context),
         ),
       ],
     );
