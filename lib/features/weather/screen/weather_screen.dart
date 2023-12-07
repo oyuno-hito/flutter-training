@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_training/features/weather/components/error_dialog.dart';
 import 'package:flutter_training/features/weather/components/weather.dart';
@@ -26,20 +28,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
         _weather = weather;
       });
     } on YumemiWeatherError catch (e) {
-      await showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) {
-          return ErrorDialogWidget(errorMessage: e.convertErrorMessage());
-        },
+      unawaited(
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return ErrorDialogWidget(errorMessage: e.convertErrorMessage());
+          },
+        ),
       );
     } on WeatherConditionException catch (e) {
-      await showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) {
-          return ErrorDialogWidget(errorMessage: e.toString());
-        },
+      unawaited(
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return ErrorDialogWidget(errorMessage: e.toString());
+          },
+        ),
       );
     }
   }
