@@ -1,3 +1,5 @@
+import 'package:flutter_training/features/weather/exceptions/app_exception.dart';
+
 enum WeatherCondition {
   sunny(image: 'assets/sunny.svg'),
   cloudy(image: 'assets/cloudy.svg'),
@@ -9,7 +11,7 @@ enum WeatherCondition {
   factory WeatherCondition.from(String name) =>
       WeatherCondition.values.singleWhere(
         (element) => element.name == name,
-        orElse: () => throw Exception('`$name` is invalid value'),
+        orElse: () => throw const WeatherConditionException(),
       );
 
   final String image;
