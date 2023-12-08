@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.9
+  intl: ^0.18.1
   yumemi_weather:
     git:
       url: https://github.com/yumemi-inc/flutter-training-template.git
