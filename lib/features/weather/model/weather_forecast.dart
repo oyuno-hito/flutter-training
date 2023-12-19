@@ -9,12 +9,33 @@ class WeatherForecast {
   });
 
   factory WeatherForecast.fromJson(Map<String, dynamic> json) {
+    final weatherCondition =
+        WeatherCondition.values.from(json['weather_condition'].toString());
+
+    if (weatherCondition == null) {
+      throw const FormatException('サーバーから不正な値が返されました。');
+    }
+
+    final maxTemperature = int.tryParse(json['max_temperature'].toString());
+    if (maxTemperature == null) {
+      throw const FormatException('サーバーから不正な値が返されました。');
+    }
+
+    final minTemperature = int.tryParse(json['min_temperature'].toString());
+    if (minTemperature == null) {
+      throw const FormatException('サーバーから不正な値が返されました。');
+    }
+
+    final date = DateTime.tryParse(json['date'].toString());
+    if (date == null) {
+      throw const FormatException('サーバーから不正な値が返されました。');
+    }
+
     return WeatherForecast(
-      weatherCondition:
-          WeatherCondition.from(json['weather_condition'] as String),
-      maxTemperature: json['max_temperature'] as int,
-      minTemperature: json['min_temperature'] as int,
-      date: DateTime.parse(json['date'] as String),
+      weatherCondition: weatherCondition,
+      maxTemperature: maxTemperature,
+      minTemperature: minTemperature,
+      date: date,
     );
   }
 

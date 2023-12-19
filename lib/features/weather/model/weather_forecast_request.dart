@@ -1,14 +1,16 @@
 class WeatherForecastRequest {
   WeatherForecastRequest(
     this.area,
+    this.date,
   );
 
   Map<String, dynamic> toJson() {
     return {
       'area': area,
-      'date': '2020-04-01T12:00:00+09:00',
+      'date': date.toIso8601String(),
     };
   }
 
   final String area;
+  final DateTime date;
 }

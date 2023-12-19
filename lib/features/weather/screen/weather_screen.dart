@@ -20,10 +20,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
   final _yumemiWeather = YumemiWeather();
   WeatherForecast? _weatherForecast;
 
-  final _area = 'tokyo';
-
   Future<void> _updateWeather() async {
-    final request = WeatherForecastRequest(_area);
+    const area = 'tokyo';
+    final date = DateTime.now();
+
+    final request = WeatherForecastRequest(area, date);
     final requestJson = jsonEncode(request.toJson());
 
     try {
@@ -35,8 +36,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
       });
     } on YumemiWeatherError catch (e) {
       _showErrorDialog(e.convertErrorMessage());
-    } on WeatherConditionException catch (e) {
-      _showErrorDialog(e.toString());
+    } on FormatException catch (e) {
+      _showErrorDialog(e.message);
     }
   }
 
