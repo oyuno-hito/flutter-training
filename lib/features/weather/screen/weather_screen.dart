@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_training/features/weather/components/error_dialog.dart';
 import 'package:flutter_training/features/weather/components/weather.dart';
+import 'package:flutter_training/features/weather/exceptions/app_exception.dart';
 import 'package:flutter_training/features/weather/model/weather_condition.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
@@ -13,6 +17,34 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   final _yumemiWeather = YumemiWeather();
   WeatherCondition? _weather;
+
+  final _area = 'tokyo';
+
+  Future<void> _updateWeather() async {
+    try {
+      final weather =
+          WeatherCondition.from(_yumemiWeather.fetchThrowsWeather(_area));
+      setState(() {
+        _weather = weather;
+      });
+    } on YumemiWeatherError catch (e) {
+      _showErrorDialog(e.convertErrorMessage());
+    } on WeatherConditionException catch (e) {
+      _showErrorDialog(e.toString());
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return ErrorDialogWidget(errorMessage: message);
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +69,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       ),
                       Expanded(
                         child: TextButton(
-                          onPressed: () {
-                            final weather = WeatherCondition.from(
-                              _yumemiWeather.fetchSimpleWeather(),
-                            );
-                            setState(() {
-                              _weather = weather;
-                            });
-                          },
+                          onPressed: _updateWeather,
                           child: const Text('Reload'),
                         ),
                       ),
