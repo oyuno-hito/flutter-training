@@ -7,6 +7,7 @@ import 'package:flutter_training/features/weather/components/weather.dart';
 import 'package:flutter_training/features/weather/exceptions/app_exception.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast_request.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 class WeatherScreen extends StatefulWidget {
@@ -36,8 +37,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
       });
     } on YumemiWeatherError catch (e) {
       _showErrorDialog(e.convertErrorMessage());
-    } on FormatException catch (e) {
-      _showErrorDialog(e.message);
+    } on CheckedFromJsonException catch (_) {
+      _showErrorDialog('サーバーから不正な値が返されました。');
     }
   }
 
