@@ -112,8 +112,8 @@ class __$$WeatherForecastRequestImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$WeatherForecastRequestImpl implements _WeatherForecastRequest {
-  const _$WeatherForecastRequestImpl(this.area, this.date);
+class _$WeatherForecastRequestImpl extends _WeatherForecastRequest {
+  const _$WeatherForecastRequestImpl(this.area, this.date) : super._();
 
   factory _$WeatherForecastRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$WeatherForecastRequestImplFromJson(json);
@@ -156,9 +156,10 @@ class _$WeatherForecastRequestImpl implements _WeatherForecastRequest {
   }
 }
 
-abstract class _WeatherForecastRequest implements WeatherForecastRequest {
+abstract class _WeatherForecastRequest extends WeatherForecastRequest {
   const factory _WeatherForecastRequest(
       final String area, final DateTime date) = _$WeatherForecastRequestImpl;
+  const _WeatherForecastRequest._() : super._();
 
   factory _WeatherForecastRequest.fromJson(Map<String, dynamic> json) =
       _$WeatherForecastRequestImpl.fromJson;

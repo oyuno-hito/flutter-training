@@ -25,11 +25,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
     const area = 'tokyo';
     final date = DateTime.now();
 
-    final request = WeatherForecastRequest(area, date);
-    final requestJson = jsonEncode(request.toJson());
+    final request = WeatherForecastRequest(area, date).toJsonString();
 
     try {
-      final json = jsonDecode(_yumemiWeather.fetchWeather(requestJson))
+      final json = jsonDecode(_yumemiWeather.fetchWeather(request))
           as Map<String, dynamic>;
       final weatherForecast = WeatherForecast.fromJson(json);
       setState(() {
