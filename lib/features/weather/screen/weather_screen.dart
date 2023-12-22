@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_training/features/weather/components/error_dialog.dart';
@@ -28,9 +27,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final request = WeatherForecastRequest(area, date).toJsonString();
 
     try {
-      final json = jsonDecode(_yumemiWeather.fetchWeather(request))
-          as Map<String, dynamic>;
-      final weatherForecast = WeatherForecast.fromJson(json);
+      final weatherForecast =
+          WeatherForecast.fromJsonString(_yumemiWeather.fetchWeather(request));
       setState(() {
         _weatherForecast = weatherForecast;
       });
@@ -38,6 +36,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
       _showErrorDialog(e.convertErrorMessage());
     } on CheckedFromJsonException catch (_) {
       _showErrorDialog('サーバーから不正な値が返されました。');
+    } on FormatException catch (e) {
+      _showErrorDialog(e.message);
     }
   }
 
