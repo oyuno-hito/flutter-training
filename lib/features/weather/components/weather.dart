@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_training/features/weather/components/degrees.dart';
-import 'package:flutter_training/features/weather/model/weather_condition.dart';
+import 'package:flutter_training/features/weather/model/weather_forecast.dart';
 
 class WeatherWidget extends StatelessWidget {
   const WeatherWidget({
     super.key,
-    WeatherCondition? weather,
-  }) : _weather = weather;
+    WeatherForecast? weatherForecast,
+  }) : _weatherForecast = weatherForecast;
 
-  final WeatherCondition? _weather;
+  final WeatherForecast? _weatherForecast;
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +17,16 @@ class WeatherWidget extends StatelessWidget {
       children: [
         AspectRatio(
           aspectRatio: 1,
-          child: _weather == null
+          child: _weatherForecast == null
               ? const Placeholder()
-              : SvgPicture.asset(_weather.image),
+              : SvgPicture.asset(_weatherForecast.weatherCondition.image),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          child: DegreesWidget(),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: DegreesWidget(
+            maxTemperature: _weatherForecast?.maxTemperature,
+            minTemperature: _weatherForecast?.minTemperature,
+          ),
         ),
       ],
     );

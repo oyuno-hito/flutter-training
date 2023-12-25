@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_training/features/weather/components/error_dialog.dart';
 import 'package:flutter_training/features/weather/components/weather.dart';
 import 'package:flutter_training/features/weather/exceptions/app_exception.dart';
-import 'package:flutter_training/features/weather/model/weather_condition.dart';
+import 'package:flutter_training/features/weather/model/weather_forecast.dart';
+import 'package:flutter_training/features/weather/model/weather_forecast_request.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 class WeatherScreen extends StatefulWidget {
@@ -16,21 +18,26 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   final _yumemiWeather = YumemiWeather();
-  WeatherCondition? _weather;
-
-  final _area = 'tokyo';
+  WeatherForecast? _weatherForecast;
 
   Future<void> _updateWeather() async {
+    const area = 'tokyo';
+    final date = DateTime.now();
+
+    final request = WeatherForecastRequest(area, date);
+    final requestJson = jsonEncode(request.toJson());
+
     try {
-      final weather =
-          WeatherCondition.from(_yumemiWeather.fetchThrowsWeather(_area));
+      final json = jsonDecode(_yumemiWeather.fetchWeather(requestJson))
+          as Map<String, dynamic>;
+      final weatherForecast = WeatherForecast.fromJson(json);
       setState(() {
-        _weather = weather;
+        _weatherForecast = weatherForecast;
       });
     } on YumemiWeatherError catch (e) {
       _showErrorDialog(e.convertErrorMessage());
-    } on WeatherConditionException catch (e) {
-      _showErrorDialog(e.toString());
+    } on FormatException catch (e) {
+      _showErrorDialog(e.message);
     }
   }
 
@@ -55,7 +62,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           child: Column(
             children: [
               const Spacer(),
-              WeatherWidget(weather: _weather),
+              WeatherWidget(weatherForecast: _weatherForecast),
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 80),
