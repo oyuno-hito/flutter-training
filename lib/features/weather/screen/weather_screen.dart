@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_training/features/weather/components/error_dialog.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_training/features/weather/components/weather.dart';
 import 'package:flutter_training/features/weather/exceptions/app_exception.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast_request.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
 class WeatherScreen extends StatefulWidget {
@@ -24,18 +24,18 @@ class _WeatherScreenState extends State<WeatherScreen> {
     const area = 'tokyo';
     final date = DateTime.now();
 
-    final request = WeatherForecastRequest(area, date);
-    final requestJson = jsonEncode(request.toJson());
+    final request = WeatherForecastRequest(area, date).toJsonString();
 
     try {
-      final json = jsonDecode(_yumemiWeather.fetchWeather(requestJson))
-          as Map<String, dynamic>;
-      final weatherForecast = WeatherForecast.fromJson(json);
+      final weatherForecast =
+          WeatherForecast.fromJsonString(_yumemiWeather.fetchWeather(request));
       setState(() {
         _weatherForecast = weatherForecast;
       });
     } on YumemiWeatherError catch (e) {
       _showErrorDialog(e.convertErrorMessage());
+    } on CheckedFromJsonException catch (_) {
+      _showErrorDialog('サーバーから不正な値が返されました。');
     } on FormatException catch (e) {
       _showErrorDialog(e.message);
     }
