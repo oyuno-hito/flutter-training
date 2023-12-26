@@ -11,8 +11,8 @@ targets:
           checked: true
         generate_for:
           include:
-            - lib/features/weather/model/**
+            - lib/features/weather/model/*.dart
       freezed:
         generate_for:
           include:
-            - lib/features/weather/model/**
+            - lib/features/weather/model/*.dart
