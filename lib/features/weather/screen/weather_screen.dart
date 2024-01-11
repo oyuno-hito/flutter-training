@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_training/features/weather/components/weather.dart';
-import 'package:flutter_training/features/weather/provider/weather_screen_state_notifier.dart';
+import 'package:flutter_training/features/weather/screen/provider/weather_screen_state_notifier.dart';
 
 class WeatherScreen extends ConsumerWidget {
   const WeatherScreen({super.key});
