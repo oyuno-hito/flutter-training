@@ -8,6 +8,8 @@ class WeatherScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const area = 'tokyo';
+    final date = DateTime.now();
     final weatherForecast = ref.watch(
       weatherScreenStateNotifierProvider
           .select((value) => value.weatherForecast),
@@ -38,7 +40,7 @@ class WeatherScreen extends ConsumerWidget {
                                 .read(
                                   weatherScreenStateNotifierProvider.notifier,
                                 )
-                                .fetchWeather(),
+                                .fetchWeather(area, date),
                           },
                           child: const Text('Reload'),
                         ),
