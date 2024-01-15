@@ -1,13 +1,35 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_training/features/weather/components/error_dialog.dart';
 import 'package:flutter_training/features/weather/components/weather.dart';
 import 'package:flutter_training/features/weather/screen/provider/weather_screen_state_notifier.dart';
 
 class WeatherScreen extends ConsumerWidget {
   const WeatherScreen({super.key});
 
+  void showErrorDialog(String message, BuildContext context) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return ErrorDialogWidget(errorMessage: message);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(weatherScreenStateNotifierProvider, (_, weatherScreenState) {
+      if (weatherScreenState.weatherForecast is! AsyncError) {
+        return;
+      }
+      final errorMessage = weatherScreenState.weatherForecast.error.toString();
+      showErrorDialog(errorMessage, context);
+    });
     const area = 'tokyo';
     final date = DateTime.now();
     final weatherForecast = ref.watch(
@@ -21,7 +43,7 @@ class WeatherScreen extends ConsumerWidget {
           child: Column(
             children: [
               const Spacer(),
-              WeatherWidget(weatherForecast: weatherForecast),
+              WeatherWidget(weatherForecast: weatherForecast.value),
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 80),

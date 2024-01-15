@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$WeatherScreenState {
-  WeatherForecast? get weatherForecast => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
+  AsyncValue<WeatherForecast?> get weatherForecast =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WeatherScreenStateCopyWith<WeatherScreenState> get copyWith =>
@@ -30,9 +30,7 @@ abstract class $WeatherScreenStateCopyWith<$Res> {
           WeatherScreenState value, $Res Function(WeatherScreenState) then) =
       _$WeatherScreenStateCopyWithImpl<$Res, WeatherScreenState>;
   @useResult
-  $Res call({WeatherForecast? weatherForecast, String? errorMessage});
-
-  $WeatherForecastCopyWith<$Res>? get weatherForecast;
+  $Res call({AsyncValue<WeatherForecast?> weatherForecast});
 }
 
 /// @nodoc
@@ -48,31 +46,14 @@ class _$WeatherScreenStateCopyWithImpl<$Res, $Val extends WeatherScreenState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? weatherForecast = freezed,
-    Object? errorMessage = freezed,
+    Object? weatherForecast = null,
   }) {
     return _then(_value.copyWith(
-      weatherForecast: freezed == weatherForecast
+      weatherForecast: null == weatherForecast
           ? _value.weatherForecast
           : weatherForecast // ignore: cast_nullable_to_non_nullable
-              as WeatherForecast?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as AsyncValue<WeatherForecast?>,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $WeatherForecastCopyWith<$Res>? get weatherForecast {
-    if (_value.weatherForecast == null) {
-      return null;
-    }
-
-    return $WeatherForecastCopyWith<$Res>(_value.weatherForecast!, (value) {
-      return _then(_value.copyWith(weatherForecast: value) as $Val);
-    });
   }
 }
 
@@ -84,10 +65,7 @@ abstract class _$$WeatherScreenStateImplCopyWith<$Res>
       __$$WeatherScreenStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({WeatherForecast? weatherForecast, String? errorMessage});
-
-  @override
-  $WeatherForecastCopyWith<$Res>? get weatherForecast;
+  $Res call({AsyncValue<WeatherForecast?> weatherForecast});
 }
 
 /// @nodoc
@@ -101,18 +79,13 @@ class __$$WeatherScreenStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? weatherForecast = freezed,
-    Object? errorMessage = freezed,
+    Object? weatherForecast = null,
   }) {
     return _then(_$WeatherScreenStateImpl(
-      weatherForecast: freezed == weatherForecast
+      weatherForecast: null == weatherForecast
           ? _value.weatherForecast
           : weatherForecast // ignore: cast_nullable_to_non_nullable
-              as WeatherForecast?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as AsyncValue<WeatherForecast?>,
     ));
   }
 }
@@ -120,17 +93,14 @@ class __$$WeatherScreenStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$WeatherScreenStateImpl implements _WeatherScreenState {
-  const _$WeatherScreenStateImpl(
-      {required this.weatherForecast, required this.errorMessage});
+  const _$WeatherScreenStateImpl({required this.weatherForecast});
 
   @override
-  final WeatherForecast? weatherForecast;
-  @override
-  final String? errorMessage;
+  final AsyncValue<WeatherForecast?> weatherForecast;
 
   @override
   String toString() {
-    return 'WeatherScreenState(weatherForecast: $weatherForecast, errorMessage: $errorMessage)';
+    return 'WeatherScreenState(weatherForecast: $weatherForecast)';
   }
 
   @override
@@ -139,13 +109,11 @@ class _$WeatherScreenStateImpl implements _WeatherScreenState {
         (other.runtimeType == runtimeType &&
             other is _$WeatherScreenStateImpl &&
             (identical(other.weatherForecast, weatherForecast) ||
-                other.weatherForecast == weatherForecast) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+                other.weatherForecast == weatherForecast));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, weatherForecast, errorMessage);
+  int get hashCode => Object.hash(runtimeType, weatherForecast);
 
   @JsonKey(ignore: true)
   @override
@@ -157,13 +125,11 @@ class _$WeatherScreenStateImpl implements _WeatherScreenState {
 
 abstract class _WeatherScreenState implements WeatherScreenState {
   const factory _WeatherScreenState(
-      {required final WeatherForecast? weatherForecast,
-      required final String? errorMessage}) = _$WeatherScreenStateImpl;
+          {required final AsyncValue<WeatherForecast?> weatherForecast}) =
+      _$WeatherScreenStateImpl;
 
   @override
-  WeatherForecast? get weatherForecast;
-  @override
-  String? get errorMessage;
+  AsyncValue<WeatherForecast?> get weatherForecast;
   @override
   @JsonKey(ignore: true)
   _$$WeatherScreenStateImplCopyWith<_$WeatherScreenStateImpl> get copyWith =>
