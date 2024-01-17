@@ -59,8 +59,26 @@ void main() {
       final result = container.read(weatherScreenStateNotifierProvider);
       expect(result, expected);
     });
-    group('エラーの場合に意図したエラー文言が返ること', () {
+    group('エラーの場合に意図したエラー文言及びfetch前のstateのWeatherForecastの値が保持されること', () {
+      setUp(() {
+        const previousStateJson = '''
+        {
+          "weather_condition":"cloudy",
+          "max_temperature":25,
+          "min_temperature":7,
+          "date":"2020-04-01T12:00:00+09:00"
+          }
+        ''';
+        when(mockYumemiWeather.fetchWeather(any)).thenReturn(previousStateJson);
+        container
+            .read(weatherScreenStateNotifierProvider.notifier)
+            .fetchWeather(area, date);
+      });
       test('YumemiWeatherErrorの場合', () {
+        final previousState = container
+            .read(weatherScreenStateNotifierProvider.notifier)
+            .state
+            .weatherForecast;
         const expected = 'APIのエラーが発生しました。';
         when(mockYumemiWeather.fetchWeather(any))
             .thenThrow(YumemiWeatherError.unknown);
@@ -69,8 +87,13 @@ void main() {
             .fetchWeather(area, date);
         final result = container.read(weatherScreenStateNotifierProvider);
         expect(result.weatherForecast.error, expected);
+        expect(result.weatherForecast.value, previousState.value);
       });
       test('Exceptionの場合', () {
+        final previousState = container
+            .read(weatherScreenStateNotifierProvider.notifier)
+            .state
+            .weatherForecast;
         const expected = '不明なエラーです。';
         when(mockYumemiWeather.fetchWeather(any)).thenThrow(Exception());
         container
@@ -78,6 +101,7 @@ void main() {
             .fetchWeather(area, date);
         final result = container.read(weatherScreenStateNotifierProvider);
         expect(result.weatherForecast.error, expected);
+        expect(result.weatherForecast.value, previousState.value);
       });
     });
   });
