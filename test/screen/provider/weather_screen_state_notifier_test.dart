@@ -34,6 +34,7 @@ void main() {
       container.dispose();
     });
     test('正常系の場合WeatherForecastの値が更新されること', () {
+      // Arrange
       const weatherForecast = '''
         {
           "weather_condition":"cloudy",
@@ -53,10 +54,14 @@ void main() {
         ),
       );
       when(mockYumemiWeather.fetchWeather(any)).thenReturn(weatherForecast);
+
+      // Act
       container
           .read(weatherScreenStateNotifierProvider.notifier)
           .fetchWeather(area, date);
       final result = container.read(weatherScreenStateNotifierProvider);
+
+      // Assert
       expect(result, expected);
     });
     group('エラーの場合に意図したエラー文言及びfetch前のstateのWeatherForecastの値が保持されること', () {
@@ -75,6 +80,7 @@ void main() {
             .fetchWeather(area, date);
       });
       test('YumemiWeatherErrorの場合', () {
+        // Arrange
         final previousState = container
             .read(weatherScreenStateNotifierProvider.notifier)
             .state
@@ -82,24 +88,33 @@ void main() {
         const expected = 'APIのエラーが発生しました。';
         when(mockYumemiWeather.fetchWeather(any))
             .thenThrow(YumemiWeatherError.unknown);
+
+        // Act
         container
             .read(weatherScreenStateNotifierProvider.notifier)
             .fetchWeather(area, date);
         final result = container.read(weatherScreenStateNotifierProvider);
+
+        // Assert
         expect(result.weatherForecast.error, expected);
         expect(result.weatherForecast.value, previousState.value);
       });
       test('Exceptionの場合', () {
+        // Arrange
         final previousState = container
             .read(weatherScreenStateNotifierProvider.notifier)
             .state
             .weatherForecast;
         const expected = '不明なエラーです。';
         when(mockYumemiWeather.fetchWeather(any)).thenThrow(Exception());
+
+        // Act
         container
             .read(weatherScreenStateNotifierProvider.notifier)
             .fetchWeather(area, date);
         final result = container.read(weatherScreenStateNotifierProvider);
+
+        // Assert
         expect(result.weatherForecast.error, expected);
         expect(result.weatherForecast.value, previousState.value);
       });
