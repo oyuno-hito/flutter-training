@@ -9,6 +9,12 @@ import 'package:flutter_training/features/weather/screen/provider/weather_screen
 class WeatherScreen extends ConsumerWidget {
   const WeatherScreen({super.key});
 
+  @visibleForTesting
+  static final closeKey = UniqueKey();
+
+  @visibleForTesting
+  static final reloadKey = UniqueKey();
+
   void _showErrorDialog(String message, BuildContext context) {
     unawaited(
       showDialog<void>(
@@ -52,6 +58,7 @@ class WeatherScreen extends ConsumerWidget {
                       Expanded(
                         child: TextButton(
                           onPressed: () => Navigator.pop(context),
+                          key: closeKey,
                           child: const Text('Close'),
                         ),
                       ),
@@ -64,6 +71,7 @@ class WeatherScreen extends ConsumerWidget {
                                 )
                                 .fetchWeather(area, date),
                           },
+                          key: reloadKey,
                           child: const Text('Reload'),
                         ),
                       ),
