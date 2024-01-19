@@ -13,6 +13,12 @@ class DegreesWidget extends StatelessWidget {
 
   static const _defalutValue = '**';
 
+  @visibleForTesting
+  static final maxTemperatureKey = UniqueKey();
+
+  @visibleForTesting
+  static final minTemperatureKey = UniqueKey();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -26,6 +32,7 @@ class DegreesWidget extends StatelessWidget {
             style: theme.textTheme.labelLarge?.copyWith(
               color: Colors.blue,
             ),
+            key: minTemperatureKey,
           ),
         ),
         Expanded(
@@ -35,6 +42,7 @@ class DegreesWidget extends StatelessWidget {
             style: theme.textTheme.labelLarge?.copyWith(
               color: Colors.red,
             ),
+            key: maxTemperatureKey,
           ),
         ),
       ],
