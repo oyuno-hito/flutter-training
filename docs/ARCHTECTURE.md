@@ -18,7 +18,6 @@ subgraph UI Layer
 end
 
 subgraph Respository Layer
-    repositoryProvider[[repositoryProvider]]
     repository[[repository]]
 end
 
@@ -33,8 +32,7 @@ state-->response
 repository-->response
 repository-->request
 
-repositoryProvider-->repository
-notifier-->repositoryProvider
+notifier-->repository
 ```
 
 mermaid 図から分かる通り state が response モデルに依存しているが、研修では I/F の変更が入らず冗長化の恩恵が薄いためこれを許容する
