@@ -15,6 +15,9 @@ subgraph UI Layer
         notifier[[notifier]]
     end
     screen-->notifier
+    subgraph state
+        stateModel[(state)]
+    end
 end
 
 subgraph Respository Layer
@@ -22,13 +25,12 @@ subgraph Respository Layer
 end
 
 subgraph DataLayer
-state[(state)]
 request[(request)]
 response[(response)]
 end
 
-notifier-->state
-state-->response
+notifier-->stateModel
+stateModel-->response
 repository-->response
 repository-->request
 

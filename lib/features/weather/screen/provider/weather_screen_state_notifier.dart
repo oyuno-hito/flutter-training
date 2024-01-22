@@ -1,7 +1,7 @@
 import 'package:flutter_training/features/weather/exceptions/app_exception.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast.dart';
-import 'package:flutter_training/features/weather/model/weather_screen_state.dart';
 import 'package:flutter_training/features/weather/repository/provider/yumemi_weather_repository_provider.dart';
+import 'package:flutter_training/features/weather/screen/state/weather_screen_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
