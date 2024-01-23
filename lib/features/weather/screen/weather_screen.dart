@@ -9,7 +9,7 @@ import 'package:flutter_training/features/weather/screen/provider/weather_screen
 class WeatherScreen extends ConsumerWidget {
   const WeatherScreen({super.key});
 
-  void showErrorDialog(String message, BuildContext context) {
+  void _showErrorDialog(String message, BuildContext context) {
     unawaited(
       showDialog<void>(
         context: context,
@@ -28,7 +28,7 @@ class WeatherScreen extends ConsumerWidget {
         return;
       }
       final errorMessage = weatherScreenState.weatherForecast.error.toString();
-      showErrorDialog(errorMessage, context);
+      _showErrorDialog(errorMessage, context);
     });
     const area = 'tokyo';
     final date = DateTime.now();
