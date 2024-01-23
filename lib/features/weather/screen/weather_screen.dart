@@ -32,10 +32,7 @@ class WeatherScreen extends ConsumerWidget {
     });
     const area = 'tokyo';
     final date = DateTime.now();
-    final weatherForecast = ref.watch(
-      weatherScreenStateNotifierProvider
-          .select((value) => value.weatherForecast),
-    );
+    final state = ref.watch(weatherScreenStateNotifierProvider);
     return Scaffold(
       body: Center(
         child: FractionallySizedBox(
@@ -43,7 +40,7 @@ class WeatherScreen extends ConsumerWidget {
           child: Column(
             children: [
               const Spacer(),
-              WeatherWidget(weatherForecast: weatherForecast.value),
+              WeatherWidget(weatherForecast: state.weatherForecast.value),
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 80),
