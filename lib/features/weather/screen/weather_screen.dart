@@ -1,47 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_training/features/weather/components/error_dialog.dart';
 import 'package:flutter_training/features/weather/components/weather.dart';
-import 'package:flutter_training/features/weather/exceptions/app_exception.dart';
-import 'package:flutter_training/features/weather/model/weather_forecast.dart';
-import 'package:flutter_training/features/weather/model/weather_forecast_request.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:yumemi_weather/yumemi_weather.dart';
+import 'package:flutter_training/features/weather/screen/provider/weather_screen_state_notifier.dart';
 
-class WeatherScreen extends StatefulWidget {
+class WeatherScreen extends ConsumerWidget {
   const WeatherScreen({super.key});
 
-  @override
-  State<WeatherScreen> createState() => _WeatherScreenState();
-}
-
-class _WeatherScreenState extends State<WeatherScreen> {
-  final _yumemiWeather = YumemiWeather();
-  WeatherForecast? _weatherForecast;
-
-  Future<void> _updateWeather() async {
-    const area = 'tokyo';
-    final date = DateTime.now();
-
-    final request = WeatherForecastRequest(area, date).toJsonString();
-
-    try {
-      final weatherForecast =
-          WeatherForecast.fromJsonString(_yumemiWeather.fetchWeather(request));
-      setState(() {
-        _weatherForecast = weatherForecast;
-      });
-    } on YumemiWeatherError catch (e) {
-      _showErrorDialog(e.convertErrorMessage());
-    } on CheckedFromJsonException catch (_) {
-      _showErrorDialog('サーバーから不正な値が返されました。');
-    } on FormatException catch (e) {
-      _showErrorDialog(e.message);
-    }
-  }
-
-  void _showErrorDialog(String message) {
+  void _showErrorDialog(String message, BuildContext context) {
     unawaited(
       showDialog<void>(
         context: context,
@@ -54,7 +22,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(weatherScreenStateNotifierProvider, (_, weatherScreenState) {
+      if (weatherScreenState.weatherForecast is! AsyncError) {
+        return;
+      }
+      final errorMessage = weatherScreenState.weatherForecast.error.toString();
+      _showErrorDialog(errorMessage, context);
+    });
+    const area = 'tokyo';
+    final date = DateTime.now();
+    final state = ref.watch(weatherScreenStateNotifierProvider);
     return Scaffold(
       body: Center(
         child: FractionallySizedBox(
@@ -62,7 +40,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           child: Column(
             children: [
               const Spacer(),
-              WeatherWidget(weatherForecast: _weatherForecast),
+              WeatherWidget(weatherForecast: state.weatherForecast.value),
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 80),
@@ -76,7 +54,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       ),
                       Expanded(
                         child: TextButton(
-                          onPressed: _updateWeather,
+                          onPressed: () => {
+                            ref
+                                .read(
+                                  weatherScreenStateNotifierProvider.notifier,
+                                )
+                                .fetchWeather(area, date),
+                          },
                           child: const Text('Reload'),
                         ),
                       ),
