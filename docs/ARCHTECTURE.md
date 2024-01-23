@@ -33,4 +33,5 @@ repository-->request
 provider-->repository
 ```
 
-mermaid 図から分かる通り state が response モデルに依存しているが、研修では I/F の変更が入らず冗長化の恩恵が薄いためこれを許容する
+> [!NOTE]
+> mermaid 図から分かる通り state が response モデルに依存しているが、研修では I/F の変更が入らず冗長化の恩恵が薄いためこれを許容する
