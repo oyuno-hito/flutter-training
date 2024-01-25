@@ -58,6 +58,7 @@ void main() {
     });
     group('エラーの場合に意図したエラー文言及びfetch前のstateのWeatherForecastの値が保持されること', () {
       setUp(() {
+        // stateの初期値はnullになるため、weatherForecastのダミー値をセットしておく
         final weatherForecast = WeatherForecast(
           weatherCondition: WeatherCondition.cloudy,
           maxTemperature: 25,
