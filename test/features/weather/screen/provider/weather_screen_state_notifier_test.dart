@@ -12,20 +12,20 @@ import 'package:yumemi_weather/yumemi_weather.dart';
 
 import 'weather_screen_state_notifier_test.mocks.dart';
 
-@GenerateMocks([YumemiWeather])
+@GenerateMocks([YumemiWeatherRepository])
 void main() {
   group('fetchWeather', () {
     const area = 'tokyo';
     final date = DateTime.parse('2020-04-01T12:00:00+09:00');
 
     late ProviderContainer container;
-    final mockYumemiWeather = MockYumemiWeather();
+    final mockYumemiWeatherRepository = MockYumemiWeatherRepository();
 
     setUp(() {
       container = ProviderContainer(
         overrides: [
           yumemiWeatherRepositoryProvider.overrideWithValue(
-            YumemiWeatherRepository(mockYumemiWeather),
+            mockYumemiWeatherRepository,
           ),
         ],
       );
@@ -35,25 +35,14 @@ void main() {
     });
     test('正常系の場合WeatherForecastの値が更新されること', () {
       // Arrange
-      const weatherForecast = '''
-        {
-          "weather_condition":"cloudy",
-          "max_temperature":25,
-          "min_temperature":7,
-          "date":"2020-04-01T12:00:00+09:00"
-          }
-        ''';
-      final expected = WeatherScreenState(
-        weatherForecast: AsyncData(
-          WeatherForecast(
-            weatherCondition: WeatherCondition.cloudy,
-            maxTemperature: 25,
-            minTemperature: 7,
-            date: DateTime.parse('2020-04-01T12:00:00+09:00'),
-          ),
-        ),
+      final weatherForecast = WeatherForecast(
+        weatherCondition: WeatherCondition.cloudy,
+        maxTemperature: 25,
+        minTemperature: 7,
+        date: DateTime.parse('2020-04-01T12:00:00+09:00'),
       );
-      when(mockYumemiWeather.fetchWeather(any)).thenReturn(weatherForecast);
+      when(mockYumemiWeatherRepository.fetchWeather(any, any))
+          .thenReturn(weatherForecast);
 
       // Act
       container
@@ -62,19 +51,21 @@ void main() {
       final result = container.read(weatherScreenStateNotifierProvider);
 
       // Assert
+      final expected =
+          WeatherScreenState(weatherForecast: AsyncData(weatherForecast));
+
       expect(result, expected);
     });
     group('エラーの場合に意図したエラー文言及びfetch前のstateのWeatherForecastの値が保持されること', () {
       setUp(() {
-        const previousStateJson = '''
-        {
-          "weather_condition":"cloudy",
-          "max_temperature":25,
-          "min_temperature":7,
-          "date":"2020-04-01T12:00:00+09:00"
-          }
-        ''';
-        when(mockYumemiWeather.fetchWeather(any)).thenReturn(previousStateJson);
+        final weatherForecast = WeatherForecast(
+          weatherCondition: WeatherCondition.cloudy,
+          maxTemperature: 25,
+          minTemperature: 7,
+          date: DateTime.parse('2020-04-01T12:00:00+09:00'),
+        );
+        when(mockYumemiWeatherRepository.fetchWeather(any, any))
+            .thenReturn(weatherForecast);
         container
             .read(weatherScreenStateNotifierProvider.notifier)
             .fetchWeather(area, date);
@@ -86,7 +77,7 @@ void main() {
             .state
             .weatherForecast;
         const expected = 'APIのエラーが発生しました。';
-        when(mockYumemiWeather.fetchWeather(any))
+        when(mockYumemiWeatherRepository.fetchWeather(any, any))
             .thenThrow(YumemiWeatherError.unknown);
 
         // Act
@@ -106,7 +97,8 @@ void main() {
             .state
             .weatherForecast;
         const expected = '不明なエラーです。';
-        when(mockYumemiWeather.fetchWeather(any)).thenThrow(Exception());
+        when(mockYumemiWeatherRepository.fetchWeather(any, any))
+            .thenThrow(Exception());
 
         // Act
         container
