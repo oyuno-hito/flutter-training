@@ -62,7 +62,7 @@ void main() {
       when(mockYumemiWeather.fetchWeather(any))
           .thenThrow(YumemiWeatherError.unknown);
 
-      // Assert
+      // Act・Assert
       expect(
         () => container
             .read(yumemiWeatherRepositoryProvider)
