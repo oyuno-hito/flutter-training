@@ -15,6 +15,8 @@ class WeatherScreen extends ConsumerWidget {
   @visibleForTesting
   static final reloadKey = UniqueKey();
 
+  static const dialogColor = Colors.black54;
+
   void _showErrorDialog(String message, BuildContext context) {
     unawaited(
       showDialog<void>(
@@ -38,47 +40,65 @@ class WeatherScreen extends ConsumerWidget {
     });
     const area = 'tokyo';
     final date = DateTime.now();
-    final state = ref.watch(weatherScreenStateNotifierProvider);
+    final weatherForecast =
+        ref.watch(weatherScreenStateNotifierProvider).weatherForecast;
     return Scaffold(
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          child: Column(
-            children: [
-              const Spacer(),
-              WeatherWidget(weatherForecast: state.weatherForecast.value),
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 80),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          key: closeKey,
-                          child: const Text('Close'),
+      body: Stack(
+        children: [
+          Center(
+            child: FractionallySizedBox(
+              widthFactor: 0.5,
+              child: AbsorbPointer(
+                absorbing: weatherForecast.isLoading,
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    WeatherWidget(weatherForecast: weatherForecast.value),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 80),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                key: closeKey,
+                                child: const Text('Close'),
+                              ),
+                            ),
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () async {
+                                  await ref
+                                      .read(
+                                        weatherScreenStateNotifierProvider
+                                            .notifier,
+                                      )
+                                      .fetchWeather(area, date);
+                                },
+                                key: reloadKey,
+                                child: const Text('Reload'),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () async {
-                            await ref
-                                .read(
-                                  weatherScreenStateNotifierProvider.notifier,
-                                )
-                                .fetchWeather(area, date);
-                          },
-                          key: reloadKey,
-                          child: const Text('Reload'),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+          if (weatherForecast.isLoading)
+            const ColoredBox(
+              color: dialogColor,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
