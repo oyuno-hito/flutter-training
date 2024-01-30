@@ -91,7 +91,9 @@ void main() {
         ],
       );
       when(mockYumemiWeatherRepository.fetchWeather(any, any))
-          .thenReturn(dummyWeatherForecast);
+          .thenAnswer((_) async {
+        return dummyWeatherForecast;
+      });
 
       final reloadFinder = find.byKey(WeatherScreen.reloadKey);
 
@@ -127,7 +129,9 @@ void main() {
 
         // NOTE: 事前準備としてWeatherScreenStateの値を入れておく
         when(mockYumemiWeatherRepository.fetchWeather(any, any))
-            .thenReturn(dummyWeatherForecast);
+            .thenAnswer((_) async {
+          return dummyWeatherForecast;
+        });
         await widgetTester.tap(reloadFinder);
         await widgetTester.pump();
 
