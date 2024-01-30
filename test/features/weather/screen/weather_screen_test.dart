@@ -16,7 +16,7 @@ import '../../../mocks/yumemi_weather_repository_mock.mocks.dart';
 import '../utils/display_size.dart';
 
 void main() {
-  Future<void> pumpWidget(
+  Future<void> pumpWeatherScreen(
     WidgetTester widgetTester,
   ) async {
     final mockNavigatorObserver = MockNavigatorObserver();
@@ -42,7 +42,7 @@ void main() {
   testWidgets('各種widgetが表示されること(WeatherWidget, Closeボタン, Reloadボタン)',
       (widgetTester) async {
     // Arrange
-    await pumpWidget(widgetTester);
+    await pumpWeatherScreen(widgetTester);
     final weatherWidgetFinder = find.byType(WeatherWidget);
     final closeKeyFinder = find.byKey(WeatherScreen.closeKey);
     final reloadKeyFinder = find.byKey(WeatherScreen.reloadKey);
@@ -56,7 +56,7 @@ void main() {
   testWidgets('Closeボタンを押下したとき、WeatherScreenWidgetがpopされること',
       (widgetTester) async {
     // Arrange
-    await pumpWidget(widgetTester);
+    await pumpWeatherScreen(widgetTester);
     final closedButtonFinder = find.byKey(WeatherScreen.closeKey);
 
     // Act

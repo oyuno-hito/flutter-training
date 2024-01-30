@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/features/weather/components/degrees.dart';
 
 void main() {
-  Future<void> pumpWidget(
+  Future<void> pumpDegreesWidget(
     WidgetTester widgetTester,
     DegreesWidget degreesWidget,
   ) async {
@@ -15,7 +15,7 @@ void main() {
   testWidgets('temperatureの値がint型の時、minTemperature, maxTemperatureがそれぞれ表示されること',
       (widgetTester) async {
     // Arrange
-    await pumpWidget(
+    await pumpDegreesWidget(
       widgetTester,
       const DegreesWidget(
         maxTemperature: 1,
@@ -45,7 +45,7 @@ void main() {
 
   testWidgets('temperatureの値がnullの時、プレースホルダーの値が表示されること', (widgetTester) async {
     // Arrange
-    await pumpWidget(
+    await pumpDegreesWidget(
       widgetTester,
       const DegreesWidget(),
     );

@@ -8,7 +8,7 @@ import 'package:flutter_training/features/weather/model/weather_forecast.dart';
 import '../utils/display_size.dart';
 
 void main() {
-  Future<void> pumpWidget(
+  Future<void> pumpWeatherWidget(
     WidgetTester widgetTester,
     WeatherForecast? weatherForecast,
   ) async {
@@ -32,7 +32,7 @@ void main() {
 
   testWidgets('DegreesWidgetが表示されること', (widgetTester) async {
     // Act
-    await pumpWidget(widgetTester, null);
+    await pumpWeatherWidget(widgetTester, null);
     final finder = find.byType(DegreesWidget);
 
     // Assert
@@ -43,7 +43,7 @@ void main() {
     testWidgets('weatherForecastの値がnullの場合、プレースホルダーが表示されること',
         (widgetTester) async {
       // Act
-      await pumpWidget(widgetTester, null);
+      await pumpWeatherWidget(widgetTester, null);
       final finder = find.byType(Placeholder);
 
       // Assert
@@ -64,7 +64,7 @@ void main() {
             '${weatherCondition.name}の場合assets/${weatherCondition.name}.svgが表示されること',
             (widgetTester) async {
           // Act
-          await pumpWidget(
+          await pumpWeatherWidget(
             widgetTester,
             dummyWeatherForecast.copyWith(
               weatherCondition: weatherCondition,

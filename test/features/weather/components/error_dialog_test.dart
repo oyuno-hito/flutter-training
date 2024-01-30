@@ -9,7 +9,7 @@ import '../utils/display_size.dart';
 void main() {
   const dummyErrorMessage = 'dummy';
   final mockNavigatorObserver = MockNavigatorObserver();
-  Future<void> pumpWidget(
+  Future<void> pumpErrorDialogWidget(
     WidgetTester widgetTester,
   ) async {
     await widgetTester.pumpWidget(
@@ -34,7 +34,7 @@ void main() {
   testWidgets('AlertDialogWidgetが表示され、引数で与えられたエラーメッセージテキストが表示されること',
       (widgetTester) async {
     // Act
-    await pumpWidget(widgetTester);
+    await pumpErrorDialogWidget(widgetTester);
 
     // Assert
     final alertDialogFinder = find.byType(AlertDialog);
@@ -52,7 +52,7 @@ void main() {
   testWidgets('AlertDialogWidget内のボタンをタップすることでErrorDialogWidgetがpopされること',
       (widgetTester) async {
     // Arrange
-    await pumpWidget(widgetTester);
+    await pumpErrorDialogWidget(widgetTester);
 
     // Act
     final okButtonFinder = find.byKey(ErrorDialogWidget.okButtonKey);
