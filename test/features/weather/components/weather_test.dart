@@ -6,7 +6,6 @@ import 'package:flutter_training/features/weather/model/weather_condition.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast.dart';
 
 import '../utils/display_size.dart';
-import 'utils/svg_image_assertion.dart';
 
 void main() {
   Future<void> pumpWidget(
@@ -60,43 +59,23 @@ void main() {
           '2020-04-01T12:00:00+09:00',
         ),
       );
-      testWidgets('sunnyの場合assets/sunny.svgが表示されること', (widgetTester) async {
-        // Act
-        await pumpWidget(
-          widgetTester,
-          dummyWeatherForecast,
-        );
-        final finder = find.bySemanticsLabel(WeatherCondition.sunny.name);
+      for (final weatherCondition in WeatherCondition.values) {
+        testWidgets(
+            '${weatherCondition.name}の場合assets/${weatherCondition.name}.svgが表示されること',
+            (widgetTester) async {
+          // Act
+          await pumpWidget(
+            widgetTester,
+            dummyWeatherForecast.copyWith(
+              weatherCondition: weatherCondition,
+            ),
+          );
+          final finder = find.bySemanticsLabel(weatherCondition.name);
 
-        // Assert
-        expect(finder, findsOneWidget);
-      });
-      testWidgets('cloudyの場合assets/cloudy.svgが表示されること', (widgetTester) async {
-        // Act
-        await pumpWidget(
-          widgetTester,
-          dummyWeatherForecast.copyWith(
-            weatherCondition: WeatherCondition.cloudy,
-          ),
-        );
-        final finder = find.bySemanticsLabel(WeatherCondition.cloudy.name);
-
-        // Assert
-        expect(finder, findsOneWidget);
-      });
-      testWidgets('rainyの場合assets/rainy.svgが表示されること', (widgetTester) async {
-        // Act
-        await pumpWidget(
-          widgetTester,
-          dummyWeatherForecast.copyWith(
-            weatherCondition: WeatherCondition.rainy,
-          ),
-        );
-        final finder = find.bySemanticsLabel(WeatherCondition.rainy.name);
-
-        // Assert
-        expect(finder, findsOneWidget);
-      });
+          // Assert
+          expect(finder, findsOneWidget);
+        });
+      }
     });
   });
 }
