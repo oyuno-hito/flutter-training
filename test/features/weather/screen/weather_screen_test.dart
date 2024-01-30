@@ -17,11 +17,20 @@ import '../utils/display_size.dart';
 
 void main() {
   final mockNavigatorObserver = MockNavigatorObserver();
-  Future<void> pumpWeatherScreen(
-    WidgetTester widgetTester,
-  ) async {
+  final mockYumemiWeatherRepository = MockYumemiWeatherRepository();
+  Future<void> pumpWeatherScreen({
+    required WidgetTester widgetTester,
+    required bool isMockRepositoryEnabled,
+  }) async {
     await widgetTester.pumpWidget(
       ProviderScope(
+        // NOTE: Repositoryのモックが不要なテストではモックしない
+        overrides: isMockRepositoryEnabled
+            ? [
+                yumemiWeatherRepositoryProvider
+                    .overrideWithValue(mockYumemiWeatherRepository),
+              ]
+            : [],
         child: MaterialApp(
           home: const WeatherScreen(),
           navigatorObservers: [mockNavigatorObserver],
@@ -42,7 +51,10 @@ void main() {
   testWidgets('各種widgetが表示されること(WeatherWidget, Closeボタン, Reloadボタン)',
       (widgetTester) async {
     // Arrange
-    await pumpWeatherScreen(widgetTester);
+    await pumpWeatherScreen(
+      widgetTester: widgetTester,
+      isMockRepositoryEnabled: false,
+    );
     final weatherWidgetFinder = find.byType(WeatherWidget);
     final closeKeyFinder = find.byKey(WeatherScreen.closeKey);
     final reloadKeyFinder = find.byKey(WeatherScreen.reloadKey);
@@ -56,7 +68,10 @@ void main() {
   testWidgets('Closeボタンを押下したとき、WeatherScreenWidgetがpopされること',
       (widgetTester) async {
     // Arrange
-    await pumpWeatherScreen(widgetTester);
+    await pumpWeatherScreen(
+      widgetTester: widgetTester,
+      isMockRepositoryEnabled: false,
+    );
     final closedButtonFinder = find.byKey(WeatherScreen.closeKey);
 
     // Act
@@ -70,7 +85,6 @@ void main() {
   });
 
   group('Reloadボタン押下時、', () {
-    final mockYumemiWeatherRepository = MockYumemiWeatherRepository();
     final dummyWeatherForecast = WeatherForecast(
       weatherCondition: WeatherCondition.sunny,
       maxTemperature: 1,
@@ -82,16 +96,9 @@ void main() {
     testWidgets('weatherForecastが更新される場合WeatherWidgetの値が更新されること',
         (widgetTester) async {
       // Arrange
-      await widgetTester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            yumemiWeatherRepositoryProvider
-                .overrideWithValue(mockYumemiWeatherRepository),
-          ],
-          child: const MaterialApp(
-            home: WeatherScreen(),
-          ),
-        ),
+      await pumpWeatherScreen(
+        widgetTester: widgetTester,
+        isMockRepositoryEnabled: true,
       );
       when(mockYumemiWeatherRepository.fetchWeather(any, any))
           .thenReturn(dummyWeatherForecast);
@@ -119,18 +126,10 @@ void main() {
       'エラー発生時エラーダイアログが表示され、WeatherWidgetの値が更新されないこと',
       (widgetTester) async {
         // Arrange
-        await widgetTester.pumpWidget(
-          ProviderScope(
-            overrides: [
-              yumemiWeatherRepositoryProvider
-                  .overrideWithValue(mockYumemiWeatherRepository),
-            ],
-            child: const MaterialApp(
-              home: WeatherScreen(),
-            ),
-          ),
+        await pumpWeatherScreen(
+          widgetTester: widgetTester,
+          isMockRepositoryEnabled: true,
         );
-
         final reloadFinder = find.byKey(WeatherScreen.reloadKey);
 
         // NOTE: 事前準備としてWeatherScreenStateの値を入れておく
