@@ -89,7 +89,6 @@ void main() {
           ],
           child: const MaterialApp(
             home: WeatherScreen(),
-            // navigatorObservers: [mockNavigatorObserver],
           ),
         ),
       );
@@ -127,7 +126,6 @@ void main() {
             ],
             child: const MaterialApp(
               home: WeatherScreen(),
-              // navigatorObservers: [mockNavigatorObserver],
             ),
           ),
         );
@@ -148,7 +146,6 @@ void main() {
         await widgetTester.pumpAndSettle();
 
         // Assert
-
         final errorDialogFinder = find.byType(ErrorDialogWidget);
         expect(errorDialogFinder, findsOneWidget);
 
