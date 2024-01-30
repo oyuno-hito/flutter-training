@@ -50,9 +50,9 @@ void main() {
       const DegreesWidget(),
     );
 
-    final defalutTemperatureFinder = find.text('** ℃');
+    final defaultTemperatureFinder = find.text('** ℃');
 
     // Assert
-    expect(defalutTemperatureFinder, findsNWidgets(2));
+    expect(defaultTemperatureFinder, findsNWidgets(2));
   });
 }
