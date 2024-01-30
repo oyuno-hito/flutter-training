@@ -66,7 +66,7 @@ void main() {
           widgetTester,
           dummyWeatherForecast,
         );
-        final finder = findSvgImage('assets/sunny.svg');
+        final finder = find.bySemanticsLabel(WeatherCondition.sunny.name);
 
         // Assert
         expect(finder, findsOneWidget);
@@ -79,7 +79,7 @@ void main() {
             weatherCondition: WeatherCondition.cloudy,
           ),
         );
-        final finder = findSvgImage('assets/cloudy.svg');
+        final finder = find.bySemanticsLabel(WeatherCondition.cloudy.name);
 
         // Assert
         expect(finder, findsOneWidget);
@@ -92,7 +92,7 @@ void main() {
             weatherCondition: WeatherCondition.rainy,
           ),
         );
-        final finder = findSvgImage('assets/rainy.svg');
+        final finder = find.bySemanticsLabel(WeatherCondition.rainy.name);
 
         // Assert
         expect(finder, findsOneWidget);
