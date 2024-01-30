@@ -16,10 +16,10 @@ import '../../../mocks/yumemi_weather_repository_mock.mocks.dart';
 import '../utils/display_size.dart';
 
 void main() {
+  final mockNavigatorObserver = MockNavigatorObserver();
   Future<void> pumpWeatherScreen(
     WidgetTester widgetTester,
   ) async {
-    final mockNavigatorObserver = MockNavigatorObserver();
     await widgetTester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
@@ -65,6 +65,7 @@ void main() {
 
     // Assert
     final weatherScreenFinder = find.byType(WeatherScreen);
+    verify(mockNavigatorObserver.didPop(any, any)).called(1);
     expect(weatherScreenFinder, findsNothing);
   });
 
