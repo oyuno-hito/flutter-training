@@ -21,3 +21,4 @@ targets:
         generate_for:
           include:
             - lib/features/weather/model/*.dart
+            - lib/features/weather/screen/state/*.dart
