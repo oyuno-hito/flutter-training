@@ -14,11 +14,12 @@ class WeatherScreenStateNotifier extends _$WeatherScreenStateNotifier {
     return const WeatherScreenState(weatherForecast: AsyncData(null));
   }
 
-  void fetchWeather(String area, DateTime date) {
+  Future<void> fetchWeather(String area, DateTime date) async {
     final previousState = state.weatherForecast;
     try {
-      final newForecast =
-          ref.read(yumemiWeatherRepositoryProvider).fetchWeather(area, date);
+      final newForecast = await ref
+          .read(yumemiWeatherRepositoryProvider)
+          .fetchWeather(area, date);
       state = state.copyWith(weatherForecast: AsyncData(newForecast));
     } on YumemiWeatherError catch (e, s) {
       final message = e.convertErrorMessage();

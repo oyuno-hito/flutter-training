@@ -3,6 +3,8 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _i4;
+
 import 'package:flutter_training/features/weather/model/weather_forecast.dart'
     as _i2;
 import 'package:flutter_training/features/weather/repository/yumemi_weather_repository.dart'
@@ -43,7 +45,7 @@ class MockYumemiWeatherRepository extends _i1.Mock
   }
 
   @override
-  _i2.WeatherForecast fetchWeather(
+  _i4.Future<_i2.WeatherForecast> fetchWeather(
     String? area,
     DateTime? date,
   ) =>
@@ -55,7 +57,8 @@ class MockYumemiWeatherRepository extends _i1.Mock
             date,
           ],
         ),
-        returnValue: _FakeWeatherForecast_0(
+        returnValue:
+            _i4.Future<_i2.WeatherForecast>.value(_FakeWeatherForecast_0(
           this,
           Invocation.method(
             #fetchWeather,
@@ -64,6 +67,6 @@ class MockYumemiWeatherRepository extends _i1.Mock
               date,
             ],
           ),
-        ),
-      ) as _i2.WeatherForecast);
+        )),
+      ) as _i4.Future<_i2.WeatherForecast>);
 }
