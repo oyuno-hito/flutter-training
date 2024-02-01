@@ -57,7 +57,7 @@ void main() {
     // Act
     final okButtonFinder = find.byKey(ErrorDialogWidget.okButtonKey);
     await widgetTester.tap(okButtonFinder);
-    await widgetTester.pumpAndSettle();
+    await widgetTester.pump();
 
     // Assert
     verify(mockNavigatorObserver.didPop(any, any)).called(1);

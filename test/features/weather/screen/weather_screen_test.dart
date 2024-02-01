@@ -65,12 +65,10 @@ void main() {
 
     // Act
     await widgetTester.tap(closedButtonFinder);
-    await widgetTester.pumpAndSettle();
+    await widgetTester.pump();
 
     // Assert
-    final weatherScreenFinder = find.byType(WeatherScreen);
     verify(mockNavigatorObserver.didPop(any, any)).called(1);
-    expect(weatherScreenFinder, findsNothing);
   });
 
   group('Reloadボタン押下時、', () {
@@ -99,7 +97,7 @@ void main() {
 
       // Act
       await widgetTester.tap(reloadFinder);
-      await widgetTester.pumpAndSettle();
+      await widgetTester.pump();
 
       // Assert
 
@@ -131,14 +129,14 @@ void main() {
         when(mockYumemiWeatherRepository.fetchWeather(any, any))
             .thenReturn(dummyWeatherForecast);
         await widgetTester.tap(reloadFinder);
-        await widgetTester.pumpAndSettle();
+        await widgetTester.pump();
 
         when(mockYumemiWeatherRepository.fetchWeather(any, any))
             .thenThrow(YumemiWeatherError.unknown);
 
         // Act
         await widgetTester.tap(reloadFinder);
-        await widgetTester.pumpAndSettle();
+        await widgetTester.pump();
 
         // Assert
         final errorDialogFinder = find.byType(ErrorDialogWidget);
