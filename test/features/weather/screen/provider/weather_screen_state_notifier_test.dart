@@ -3,16 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_training/features/weather/model/weather_condition.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast.dart';
 import 'package:flutter_training/features/weather/repository/provider/yumemi_weather_repository_provider.dart';
-import 'package:flutter_training/features/weather/repository/yumemi_weather_repository.dart';
 import 'package:flutter_training/features/weather/screen/provider/weather_screen_state_notifier.dart';
 import 'package:flutter_training/features/weather/screen/state/weather_screen_state.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
-import 'weather_screen_state_notifier_test.mocks.dart';
+import '../../../../mocks/yumemi_weather_repository_mock.mocks.dart';
 
-@GenerateMocks([YumemiWeatherRepository])
 void main() {
   group('fetchWeather', () {
     const area = 'tokyo';

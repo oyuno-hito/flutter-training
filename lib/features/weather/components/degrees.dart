@@ -11,7 +11,13 @@ class DegreesWidget extends StatelessWidget {
   final int? _maxTemperature;
   final int? _minTemperature;
 
-  static const _defalutValue = '**';
+  static const _defaultValue = '**';
+
+  @visibleForTesting
+  static final maxTemperatureKey = UniqueKey();
+
+  @visibleForTesting
+  static final minTemperatureKey = UniqueKey();
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +27,22 @@ class DegreesWidget extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            '${_minTemperature ?? _defalutValue} ℃',
+            '${_minTemperature ?? _defaultValue} ℃',
             textAlign: TextAlign.center,
             style: theme.textTheme.labelLarge?.copyWith(
               color: Colors.blue,
             ),
+            key: minTemperatureKey,
           ),
         ),
         Expanded(
           child: Text(
-            '${_maxTemperature ?? _defalutValue} ℃',
+            '${_maxTemperature ?? _defaultValue} ℃',
             textAlign: TextAlign.center,
             style: theme.textTheme.labelLarge?.copyWith(
               color: Colors.red,
             ),
+            key: maxTemperatureKey,
           ),
         ),
       ],

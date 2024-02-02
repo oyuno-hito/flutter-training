@@ -4,13 +4,11 @@ import 'package:flutter_training/features/weather/model/weather_condition.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast.dart';
 import 'package:flutter_training/features/weather/repository/provider/yumemi_weather_provider.dart';
 import 'package:flutter_training/features/weather/repository/provider/yumemi_weather_repository_provider.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
-import 'yumemi_weather_repository_test.mocks.dart';
+import '../../../mocks/yumemi_weather_mock.mocks.dart';
 
-@GenerateMocks([YumemiWeather])
 void main() {
   group('fetchWeather', () {
     late ProviderContainer container;

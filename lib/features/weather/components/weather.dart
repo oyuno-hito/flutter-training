@@ -19,7 +19,10 @@ class WeatherWidget extends StatelessWidget {
           aspectRatio: 1,
           child: _weatherForecast == null
               ? const Placeholder()
-              : SvgPicture.asset(_weatherForecast.weatherCondition.image),
+              : SvgPicture.asset(
+                  _weatherForecast.weatherCondition.image,
+                  semanticsLabel: _weatherForecast.weatherCondition.name,
+                ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
