@@ -15,6 +15,7 @@ class WeatherScreen extends ConsumerWidget {
   @visibleForTesting
   static final reloadKey = UniqueKey();
 
+  // NOTE: ダイアログのデフォルトの背景色を適用
   static const dialogColor = Colors.black54;
 
   void _showErrorDialog(String message, BuildContext context) {
