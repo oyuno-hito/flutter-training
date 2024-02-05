@@ -69,14 +69,14 @@ class WeatherScreen extends ConsumerWidget {
                             ),
                             Expanded(
                               child: TextButton(
-                                onPressed: () async {
-                                  await ref
+                                onPressed: () => unawaited(
+                                  ref
                                       .read(
                                         weatherScreenStateNotifierProvider
                                             .notifier,
                                       )
-                                      .fetchWeather(area, date);
-                                },
+                                      .fetchWeather(area, date),
+                                ),
                                 key: reloadKey,
                                 child: const Text('Reload'),
                               ),
