@@ -7,7 +7,7 @@ import 'package:flutter_training/features/weather/repository/provider/yumemi_wea
 import 'package:mockito/mockito.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
-import '../../../mocks/yumemi_weather_mock.mocks.dart';
+import '../../../../mocks/yumemi_weather_mock.mocks.dart';
 
 void main() {
   group('fetchWeather', () {
