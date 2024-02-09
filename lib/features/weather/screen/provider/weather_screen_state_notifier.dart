@@ -14,23 +14,28 @@ class WeatherScreenStateNotifier extends _$WeatherScreenStateNotifier {
     return const WeatherScreenState(weatherForecast: AsyncData(null));
   }
 
-  void fetchWeather(String area, DateTime date) {
+  Future<void> fetchWeather(String area, DateTime date) async {
     final previousState = state.weatherForecast;
+    state = state.copyWith(
+      weatherForecast: const AsyncLoading<WeatherForecast?>()
+          .copyWithPrevious(previousState, isRefresh: false),
+    );
     try {
-      final newForecast =
-          ref.read(yumemiWeatherRepositoryProvider).fetchWeather(area, date);
+      final newForecast = await ref
+          .read(yumemiWeatherRepositoryProvider)
+          .fetchWeather(area, date);
       state = state.copyWith(weatherForecast: AsyncData(newForecast));
     } on YumemiWeatherError catch (e, s) {
       final message = e.convertErrorMessage();
       state = state.copyWith(
         weatherForecast: AsyncError<WeatherForecast?>(message, s)
-            .copyWithPrevious(previousState),
+            .copyWithPrevious(previousState, isRefresh: false),
       );
     } on Exception catch (_, s) {
       const message = '不明なエラーです。';
       state = state.copyWith(
         weatherForecast: AsyncError<WeatherForecast?>(message, s)
-            .copyWithPrevious(previousState),
+            .copyWithPrevious(previousState, isRefresh: false),
       );
     }
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast.dart';
 import 'package:flutter_training/features/weather/model/weather_forecast_request.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
@@ -9,13 +10,13 @@ class YumemiWeatherRepository {
 
   final YumemiWeather _yumemiWeather;
 
-  WeatherForecast fetchWeather(String area, DateTime date) {
+  Future<WeatherForecast> fetchWeather(String area, DateTime date) async {
     final requestString = WeatherForecastRequest(
       area,
       date,
     ).toJsonString();
-
-    final responseString = _yumemiWeather.fetchWeather(requestString);
+    final responseString =
+        await compute(_yumemiWeather.syncFetchWeather, requestString);
     return WeatherForecast.fromJsonString(responseString);
   }
 }

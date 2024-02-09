@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -33,6 +35,15 @@ void main() {
       ),
     );
   }
+
+  final dummyWeatherForecast = WeatherForecast(
+    weatherCondition: WeatherCondition.sunny,
+    maxTemperature: 1,
+    minTemperature: -1,
+    date: DateTime.parse(
+      '2020-04-01T12:00:00+09:00',
+    ),
+  );
 
   final binding = TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -72,14 +83,6 @@ void main() {
   });
 
   group('Reloadボタン押下時、', () {
-    final dummyWeatherForecast = WeatherForecast(
-      weatherCondition: WeatherCondition.sunny,
-      maxTemperature: 1,
-      minTemperature: -1,
-      date: DateTime.parse(
-        '2020-04-01T12:00:00+09:00',
-      ),
-    );
     testWidgets('weatherForecastが更新される場合WeatherWidgetの値が更新されること',
         (widgetTester) async {
       // Arrange
@@ -91,7 +94,9 @@ void main() {
         ],
       );
       when(mockYumemiWeatherRepository.fetchWeather(any, any))
-          .thenReturn(dummyWeatherForecast);
+          .thenAnswer((_) async {
+        return dummyWeatherForecast;
+      });
 
       final reloadFinder = find.byKey(WeatherScreen.reloadKey);
 
@@ -127,7 +132,9 @@ void main() {
 
         // NOTE: 事前準備としてWeatherScreenStateの値を入れておく
         when(mockYumemiWeatherRepository.fetchWeather(any, any))
-            .thenReturn(dummyWeatherForecast);
+            .thenAnswer((_) async {
+          return dummyWeatherForecast;
+        });
         await widgetTester.tap(reloadFinder);
         await widgetTester.pump();
 
@@ -153,5 +160,39 @@ void main() {
         expect(maxTemperature?.data, '1 ℃');
       },
     );
+  });
+
+  testWidgets('fetch中はCircularProgressIndicatorが表示されること', (widgetTester) async {
+    // Arrange
+    await pumpWeatherScreen(
+      widgetTester,
+      overrides: [
+        yumemiWeatherRepositoryProvider
+            .overrideWithValue(mockYumemiWeatherRepository),
+      ],
+    );
+    final fetchCompleter = Completer<WeatherForecast>();
+
+    when(mockYumemiWeatherRepository.fetchWeather(any, any))
+        .thenAnswer((_) => fetchCompleter.future);
+
+    final reloadFinder = find.byKey(WeatherScreen.reloadKey);
+
+    final circularFinder = find.byType(CircularProgressIndicator);
+
+    // Act・Assert
+    // fetch前にCircularProgressIndicatorが表示されないこと
+    expect(circularFinder, findsNothing);
+
+    await widgetTester.tap(reloadFinder);
+    await widgetTester.pump();
+
+    // fetch中にCircularProgressIndicatorが表示されること
+    expect(circularFinder, findsOneWidget);
+
+    fetchCompleter.complete(dummyWeatherForecast);
+    await widgetTester.pump();
+    // fetch後にCircularProgressIndicatorが表示されないこと
+    expect(circularFinder, findsNothing);
   });
 }

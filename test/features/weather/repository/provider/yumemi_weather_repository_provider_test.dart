@@ -7,7 +7,7 @@ import 'package:flutter_training/features/weather/repository/provider/yumemi_wea
 import 'package:mockito/mockito.dart';
 import 'package:yumemi_weather/yumemi_weather.dart';
 
-import '../../../mocks/yumemi_weather_mock.mocks.dart';
+import '../../../../mocks/yumemi_weather_mock.mocks.dart';
 
 void main() {
   group('fetchWeather', () {
@@ -28,7 +28,7 @@ void main() {
       container.dispose();
     });
 
-    test('YumemiWeatherがJsonを返す場合シリアライズされたWeatherForecastが返ること', () {
+    test('YumemiWeatherがJsonを返す場合シリアライズされたWeatherForecastが返ること', () async {
       // Arrange
       const weatherForecast = '''
         {
@@ -38,10 +38,10 @@ void main() {
           "date":"2020-04-01T12:00:00+09:00"
           }
         ''';
-      when(mockYumemiWeather.fetchWeather(any)).thenReturn(weatherForecast);
+      when(mockYumemiWeather.syncFetchWeather(any)).thenReturn(weatherForecast);
 
       // Act
-      final result = container
+      final result = await container
           .read(yumemiWeatherRepositoryProvider)
           .fetchWeather(area, date);
 
@@ -57,14 +57,16 @@ void main() {
     test('YumemiWeatherがunknownエラーを返す場合、例外としてYumemiWeatherError.unknownが返ること',
         () {
       // Arrange
-      when(mockYumemiWeather.fetchWeather(any))
+      when(mockYumemiWeather.syncFetchWeather(any))
           .thenThrow(YumemiWeatherError.unknown);
 
       // Act・Assert
       expect(
-        () => container
-            .read(yumemiWeatherRepositoryProvider)
-            .fetchWeather(area, date),
+        () async {
+          await container
+              .read(yumemiWeatherRepositoryProvider)
+              .fetchWeather(area, date);
+        },
         throwsA(YumemiWeatherError.unknown),
       );
     });

@@ -30,7 +30,7 @@ void main() {
     tearDown(() {
       container.dispose();
     });
-    test('正常系の場合WeatherForecastの値が更新されること', () {
+    test('正常系の場合WeatherForecastの値が更新されること', () async {
       // Arrange
       final weatherForecast = WeatherForecast(
         weatherCondition: WeatherCondition.cloudy,
@@ -39,10 +39,12 @@ void main() {
         date: DateTime.parse('2020-04-01T12:00:00+09:00'),
       );
       when(mockYumemiWeatherRepository.fetchWeather(any, any))
-          .thenReturn(weatherForecast);
+          .thenAnswer((_) async {
+        return weatherForecast;
+      });
 
       // Act
-      container
+      await container
           .read(weatherScreenStateNotifierProvider.notifier)
           .fetchWeather(area, date);
       final result = container.read(weatherScreenStateNotifierProvider);
@@ -54,7 +56,7 @@ void main() {
       expect(result, expected);
     });
     group('エラーの場合に意図したエラー文言及びfetch前のstateのWeatherForecastの値が保持されること', () {
-      setUp(() {
+      setUp(() async {
         // stateの初期値はnullになるため、weatherForecastのダミー値をセットしておく
         final weatherForecast = WeatherForecast(
           weatherCondition: WeatherCondition.cloudy,
@@ -63,12 +65,14 @@ void main() {
           date: DateTime.parse('2020-04-01T12:00:00+09:00'),
         );
         when(mockYumemiWeatherRepository.fetchWeather(any, any))
-            .thenReturn(weatherForecast);
-        container
+            .thenAnswer((_) async {
+          return weatherForecast;
+        });
+        await container
             .read(weatherScreenStateNotifierProvider.notifier)
             .fetchWeather(area, date);
       });
-      test('YumemiWeatherErrorの場合', () {
+      test('YumemiWeatherErrorの場合', () async {
         // Arrange
         final previousState = container
             .read(weatherScreenStateNotifierProvider.notifier)
@@ -79,27 +83,26 @@ void main() {
             .thenThrow(YumemiWeatherError.unknown);
 
         // Act
-        container
+        await container
             .read(weatherScreenStateNotifierProvider.notifier)
             .fetchWeather(area, date);
         final result = container.read(weatherScreenStateNotifierProvider);
-
         // Assert
         expect(result.weatherForecast.error, expected);
         expect(result.weatherForecast.value, previousState.value);
       });
-      test('Exceptionの場合', () {
+      test('Exceptionの場合', () async {
         // Arrange
         final previousState = container
             .read(weatherScreenStateNotifierProvider.notifier)
             .state
             .weatherForecast;
         const expected = '不明なエラーです。';
-        when(mockYumemiWeatherRepository.fetchWeather(any, any))
+        when(await mockYumemiWeatherRepository.fetchWeather(any, any))
             .thenThrow(Exception());
 
         // Act
-        container
+        await container
             .read(weatherScreenStateNotifierProvider.notifier)
             .fetchWeather(area, date);
         final result = container.read(weatherScreenStateNotifierProvider);
